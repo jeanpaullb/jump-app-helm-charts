@@ -295,7 +295,7 @@ spec:
         - name: commit
           value: "$(params.git-commit)"
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: pipeline-{{ $key }}-build-init-images

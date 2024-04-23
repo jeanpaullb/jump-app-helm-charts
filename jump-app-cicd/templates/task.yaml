@@ -1,6 +1,6 @@
 {{- range $type := .Values.pipeTypes }}
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: task-{{ $type }}-new-commit-test
@@ -57,7 +57,7 @@ spec:
 {{- end }}
 {{- end }}
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: task-new-commit-start-build-tag
@@ -78,7 +78,7 @@ spec:
           #!/usr/bin/env bash
           oc start-build bc/"$(params.buildconfig)" --commit="$(params.commit)" -n {{ $.Release.Namespace }} -w
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: task-new-commit-image-tag
@@ -100,7 +100,7 @@ spec:
         #!/usr/bin/env bash
         oc tag "$(params.imagestream)":"$(params.branch)" "$(params.imagestream)":"$(params.commit)" -n {{ $.Release.Namespace }} 
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: task-new-commit-image-deploy-by-argocd
@@ -132,7 +132,7 @@ spec:
         /tmp/argocd app sync "$(params.argoapp)"
         /tmp/argocd app wait "$(params.argoapp)"
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: argocd-task-sync-and-wait
@@ -166,7 +166,7 @@ spec:
               name: argocd-env-secret
               key: ARGOCD_PASSWORD  
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: argocd-generate-secret
@@ -194,7 +194,7 @@ spec:
         EOF
         oc apply -f /tmp/secret.yaml
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: task-new-commit-pre-functional-tests
@@ -227,7 +227,7 @@ spec:
       image: 'cypress/base:14.15.4'
       workingDir: $(workspaces.source.path)
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: task-new-commit-image-deployment-test
