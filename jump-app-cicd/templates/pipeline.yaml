@@ -1,6 +1,6 @@
 {{- range $key, $val := $.Values.global.apps }}
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: pipeline-{{ $key }}-build
